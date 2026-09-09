@@ -18,7 +18,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const SITE_URL = "https://pageturn.cloud";
+const SITE_URL = "https://www.pageturn.cloud";
 
 /** Pulls every `slug: "..."` literal out of a data module. */
 function slugsFrom(relativePath, { min }) {

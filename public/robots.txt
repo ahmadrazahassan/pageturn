@@ -28,4 +28,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://pageturn.cloud/sitemap.xml
+Sitemap: https://www.pageturn.cloud/sitemap.xml

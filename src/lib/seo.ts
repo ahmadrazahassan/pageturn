@@ -6,7 +6,7 @@
  * its own meta list and most of them silently shipped without an og:image.
  */
 
-export const SITE_URL = "https://pageturn.cloud";
+export const SITE_URL = "https://www.pageturn.cloud";
 export const SITE_NAME = "PageTurn";
 export const PUBLISHER = "PageTurn Media";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
