@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.wrangler/
+.workspace/
+.tanstack/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.git.lovable-pointer-backup
+
+# Local editor and generated files
+.DS_Store
+*.log
