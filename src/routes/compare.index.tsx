@@ -5,27 +5,41 @@ import { SiteFooter } from "@/components/site-footer";
 import { Newsletter } from "@/components/newsletter";
 import { ServiceLogo } from "@/components/service-card";
 import { services, headToHeads } from "@/lib/services";
+import { versusPages } from "@/lib/versus";
+import { seo, jsonLd, itemListSchema, breadcrumbSchema } from "@/lib/seo";
 
 const title = "Audiobook Service Comparison 2026 — Price, Trials & Ownership | PageTurn";
 const description =
   "Compare 12 audiobook services on price, free trial, catalogue size, whether you keep your books, and where each one works. Independent, hands-on testing.";
 
-export const Route = createFileRoute("/compare")({
+export const Route = createFileRoute("/compare/")({
   head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://pageturn.cloud/compare" },
+    ...seo({ title, description, path: "/compare" }),
+    scripts: [
+      jsonLd([
+        itemListSchema(
+          "Audiobook service comparisons by PageTurn",
+          versusPages.map((v) => ({ name: v.h1, path: `/compare/${v.slug}` })),
+        ),
+        breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Compare", path: "/compare" },
+        ]),
+      ]),
     ],
-    links: [{ rel: "canonical", href: "https://pageturn.cloud/compare" }],
   }),
   component: Compare,
 });
 
-const columns = ["Service", "How it works", "Price", "Free trial", "Keep your books?", "Files", "Our score"];
+const columns = [
+  "Service",
+  "How it works",
+  "Price",
+  "Free trial",
+  "Keep your books?",
+  "Files",
+  "Our score",
+];
 
 function Compare() {
   return (
@@ -51,7 +65,9 @@ function Compare() {
       <section className="max-w-6xl mx-auto px-6 py-8">
         <div className="bg-white/70 rounded-3xl shadow-pastel overflow-x-auto">
           <table className="w-full text-left font-body text-sm min-w-[880px]">
-            <caption className="sr-only">Audiobook services compared on price, trial, ownership and score</caption>
+            <caption className="sr-only">
+              Audiobook services compared on price, trial, ownership and score
+            </caption>
             <thead>
               <tr className="bg-soft">
                 {columns.map((c) => (
@@ -76,7 +92,9 @@ function Compare() {
                           {s.name}
                         </Link>
                         {s.affiliate && (
-                          <span className="block text-xs text-ink/45 font-semibold">Affiliate partner</span>
+                          <span className="block text-xs text-ink/45 font-semibold">
+                            Affiliate partner
+                          </span>
                         )}
                       </span>
                     </span>
@@ -92,6 +110,36 @@ function Compare() {
             </tbody>
           </table>
         </div>
+      </section>
+
+      {/* The table answers "what does each cost"; these answer "which of these
+          two should I pick", which is what people actually search for. */}
+      <section className="max-w-6xl mx-auto px-6 py-10">
+        <h2 className="font-display font-bold text-3xl">Full head-to-head comparisons</h2>
+        <p className="mt-2 text-ink/60 font-body max-w-2xl">
+          Longer pieces on the match-ups people ask about most, with a verdict for each kind of
+          listener rather than a single winner.
+        </p>
+        <ul className="mt-7 grid md:grid-cols-2 gap-5">
+          {versusPages.map((v) => (
+            <li key={v.slug}>
+              <Link
+                to="/compare/$slug"
+                params={{ slug: v.slug }}
+                className="group flex h-full flex-col bg-white/70 rounded-3xl p-6 shadow-pastel transition hover:-translate-y-0.5 hover:shadow-md"
+              >
+                <h3 className="font-display font-bold text-xl leading-snug flex items-start gap-2">
+                  <span className="min-w-0">{v.h1}</span>
+                  <ArrowUpRight className="mt-1 w-4 h-4 shrink-0 text-coral transition-transform group-hover:translate-x-0.5" />
+                </h3>
+                <p className="mt-2 font-body text-sm leading-relaxed text-ink/65">
+                  {v.description}
+                </p>
+                <span className="mt-3 font-body text-xs text-ink/45">Updated {v.updated}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="max-w-5xl mx-auto px-6 py-8">

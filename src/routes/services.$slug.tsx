@@ -7,6 +7,11 @@ import { ServiceLogo, ServiceCard } from "@/components/service-card";
 import { PricingHighlight } from "@/components/pricing-highlight";
 import { getService, services, headToHeads } from "@/lib/services";
 import { AffiliateBanner } from "@/components/affiliate-banner";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { RelatedLinks, type RelatedLink } from "@/components/related-links";
+import { versusForService } from "@/lib/versus";
+import { roundupsForService } from "@/lib/roundups";
+import { seo, jsonLd, breadcrumbSchema, absoluteUrl, PUBLISHER, type Crumb } from "@/lib/seo";
 
 export const Route = createFileRoute("/services/$slug")({
   loader: ({ params }) => {
@@ -21,48 +26,50 @@ export const Route = createFileRoute("/services/$slug")({
       };
     }
     const s = loaderData.service;
+    const path = `/services/${params.slug}`;
     const title = `${s.name} Review ${new Date(s.reviewedOnISO).getFullYear()} — Price, Catalogue & Verdict | PageTurn`;
     const description = `${s.summary} ${s.price}. Free trial: ${s.freeTrial}. Rated ${s.score} by PageTurn.`;
     return {
-      meta: [
-        { title },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:type", content: "article" },
-        { property: "og:url", content: `https://pageturn.cloud/services/${params.slug}` },
-      ],
-      links: [{ rel: "canonical", href: `https://pageturn.cloud/services/${params.slug}` }],
+      ...seo({
+        title,
+        description,
+        path,
+        type: "article",
+        publishedTime: s.reviewedOnISO,
+        modifiedTime: s.reviewedOnISO,
+      }),
       scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify([
-            {
-              "@context": "https://schema.org",
-              "@type": "Review",
-              headline: `${s.name} review`,
-              datePublished: s.reviewedOnISO,
-              author: { "@type": "Person", name: s.reviewer },
-              publisher: { "@type": "Organization", name: "PageTurn Media" },
-              reviewRating: { "@type": "Rating", ratingValue: s.rating, bestRating: 5, worstRating: 1 },
-              itemReviewed: {
-                "@type": "Service",
-                name: s.name,
-                url: s.url,
-                provider: { "@type": "Organization", name: s.company },
-              },
+        jsonLd([
+          {
+            "@context": "https://schema.org",
+            "@type": "Review",
+            headline: `${s.name} review`,
+            datePublished: s.reviewedOnISO,
+            dateModified: s.reviewedOnISO,
+            mainEntityOfPage: absoluteUrl(path),
+            author: { "@type": "Person", name: s.reviewer },
+            publisher: { "@type": "Organization", name: PUBLISHER },
+            reviewRating: {
+              "@type": "Rating",
+              ratingValue: s.rating,
+              bestRating: 5,
+              worstRating: 1,
             },
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-                { "@type": "ListItem", position: 2, name: "Services", item: "/services" },
-                { "@type": "ListItem", position: 3, name: s.name, item: `/services/${s.slug}` },
-              ],
+            itemReviewed: {
+              "@type": "Service",
+              name: s.name,
+              url: s.url,
+              provider: { "@type": "Organization", name: s.company },
             },
+          },
+          // Was emitting relative `item` values ("/", "/services"), which Google
+          // rejects — breadcrumb items must be absolute URLs.
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Services", path: "/services" },
+            { name: s.name, path },
           ]),
-        },
+        ]),
       ],
     };
   },
@@ -105,27 +112,44 @@ function ServiceDetail() {
   const related = services.filter((o) => o.slug !== s.slug).slice(0, 3);
   const matchups = headToHeads.filter((h) => h.slugs.includes(s.slug));
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services" },
+    { name: s.name, path: `/services/${s.slug}` },
+  ];
+
+  // Push readers on toward the pages that convert: the full comparisons this
+  // service appears in, and the roundups that rank it.
+  const comparisons = versusForService(s.slug);
+  const rankedIn = roundupsForService(s.slug);
+  const nextLinks: RelatedLink[] = [
+    ...comparisons.map((v) => ({
+      to: `/compare/${v.slug}`,
+      label: v.h1,
+      blurb: v.description,
+    })),
+    ...rankedIn.map((r) => ({
+      to: `/best/${r.slug}`,
+      label: r.h1,
+      blurb: r.description,
+    })),
+  ];
+
   return (
     <div className="min-h-screen bg-cream text-ink">
       <SiteHeader />
 
-      <nav aria-label="Breadcrumb" className="max-w-5xl mx-auto px-6 pt-8 text-sm font-body text-ink/50">
-        <Link to="/" className="hover:text-ink">
-          Home
-        </Link>
-        <span className="mx-2">/</span>
-        <Link to="/services" className="hover:text-ink">
-          Services
-        </Link>
-        <span className="mx-2">/</span>
-        <span className="text-ink/70">{s.name}</span>
-      </nav>
+      <div className="max-w-5xl mx-auto px-6 pt-8">
+        <Breadcrumbs crumbs={crumbs} />
+      </div>
 
       <header className="max-w-5xl mx-auto px-6 pt-8 pb-4">
         <div className="flex items-start gap-5 flex-wrap">
           <ServiceLogo service={s} className="w-24 h-24 sm:w-28 sm:h-28" />
           <div className="min-w-0">
-            <h1 className="font-display font-bold text-4xl sm:text-5xl leading-tight">{s.name} review</h1>
+            <h1 className="font-display font-bold text-4xl sm:text-5xl leading-tight">
+              {s.name} review
+            </h1>
             <p className="mt-3 text-lg text-ink/70 font-body max-w-2xl">{s.tagline}</p>
             <p className="mt-3 text-sm text-ink/50 font-body">
               By {s.reviewer} · Tested and updated {s.reviewedOn} · {s.company}
@@ -155,8 +179,8 @@ function ServiceDetail() {
         <p className="mt-3 text-sm text-ink/50 font-body">
           {s.affiliate ? (
             <>
-              Affiliate link — PageTurn may earn a commission if you subscribe, at no cost to you. It
-              never changes our score.{" "}
+              Affiliate link — PageTurn may earn a commission if you subscribe, at no cost to you.
+              It never changes our score.{" "}
               <Link to="/disclosure" className="underline underline-offset-2">
                 Read our disclosure
               </Link>
@@ -184,7 +208,10 @@ function ServiceDetail() {
           <p className="mt-3 text-lg text-ink/80 font-body leading-relaxed">{s.summary}</p>
           <dl className="mt-6 grid sm:grid-cols-2 gap-3 text-sm font-body">
             {facts.map(([label, value], i) => (
-              <div key={label} className={`rounded-2xl px-4 py-3 ${i % 2 === 0 ? "bg-mint/50" : "bg-peach/50"}`}>
+              <div
+                key={label}
+                className={`rounded-2xl px-4 py-3 ${i % 2 === 0 ? "bg-mint/50" : "bg-peach/50"}`}
+              >
                 <dt className="text-ink/50">{label}</dt>
                 <dd className="font-bold">{value}</dd>
               </div>
@@ -199,7 +226,8 @@ function ServiceDetail() {
           <ul className="mt-4 space-y-3 font-body">
             {s.pros.map((p) => (
               <li key={p} className="flex gap-3">
-                <Check className="w-5 h-5 shrink-0 mt-0.5" /> <span className="text-ink/80">{p}</span>
+                <Check className="w-5 h-5 shrink-0 mt-0.5" />{" "}
+                <span className="text-ink/80">{p}</span>
               </li>
             ))}
           </ul>
@@ -227,7 +255,10 @@ function ServiceDetail() {
         <h2 className="mt-12 font-display font-bold text-3xl">Best for</h2>
         <ul className="mt-4 flex flex-wrap gap-2">
           {s.bestFor.map((b) => (
-            <li key={b} className="bg-lilac/60 px-4 py-2 rounded-full font-body font-semibold text-sm">
+            <li
+              key={b}
+              className="bg-lilac/60 px-4 py-2 rounded-full font-body font-semibold text-sm"
+            >
               {b}
             </li>
           ))}
@@ -243,12 +274,27 @@ function ServiceDetail() {
         <section className="max-w-3xl mx-auto px-6 py-8">
           <h2 className="font-display font-bold text-3xl">Head to head</h2>
           <div className="mt-6 space-y-5">
-            {matchups.map((m) => (
-              <div key={m.question} className="bg-white/70 rounded-3xl p-6 shadow-pastel">
-                <h3 className="font-display font-bold text-xl">{m.question}</h3>
-                <p className="mt-2 text-ink/75 font-body leading-relaxed">{m.answer}</p>
-              </div>
-            ))}
+            {matchups.map((m) => {
+              // Where we have published the full head-to-head, send readers to it
+              // rather than leaving the answer stranded as a summary here.
+              const full = comparisons.find((v) => m.slugs.includes(v.a) && m.slugs.includes(v.b));
+              return (
+                <div key={m.question} className="bg-white/70 rounded-3xl p-6 shadow-pastel">
+                  <h3 className="font-display font-bold text-xl">{m.question}</h3>
+                  <p className="mt-2 text-ink/75 font-body leading-relaxed">{m.answer}</p>
+                  {full && (
+                    <Link
+                      to="/compare/$slug"
+                      params={{ slug: full.slug }}
+                      className="mt-4 inline-flex items-center gap-1.5 font-body font-bold text-coral hover:text-ink transition-colors"
+                    >
+                      Read the full {full.h1} comparison
+                      <ArrowUpRight className="w-4 h-4" />
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </section>
       )}
@@ -261,6 +307,8 @@ function ServiceDetail() {
           ))}
         </div>
       </section>
+
+      <RelatedLinks links={nextLinks} heading={`${s.name} compared and ranked`} />
 
       <Newsletter />
       <SiteFooter />

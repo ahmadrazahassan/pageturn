@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { seo } from "@/lib/seo";
 import { ReviewCard } from "@/components/review-card";
 import { Newsletter } from "@/components/newsletter";
 import { reviews } from "@/lib/reviews";
@@ -11,15 +12,7 @@ const description =
 
 export const Route = createFileRoute("/reviews/")({
   head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://pageturn.cloud/reviews" },
-    ],
-    links: [{ rel: "canonical", href: "https://pageturn.cloud/reviews" }],
+    ...seo({ title, description, path: "/reviews" }),
   }),
   component: ReviewsIndex,
 });

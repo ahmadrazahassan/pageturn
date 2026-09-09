@@ -18,13 +18,15 @@ function WaveMark({ size = "md" }: { size?: "sm" | "md" }) {
 
 export { WaveMark };
 
+// Contact moved to the footer to make room for /best, which is where the
+// commercial pages live and needs a link from every page on the site.
 const navItems = [
   { to: "/reviews", label: "Reviews" },
-  { to: "/services", label: "Where to listen" },
+  { to: "/best", label: "Best of" },
   { to: "/compare", label: "Compare" },
+  { to: "/services", label: "Where to listen" },
   { to: "/guides", label: "Guides" },
   { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
 ] as const;
 
 export function SiteHeader() {

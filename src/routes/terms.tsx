@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { seo } from "@/lib/seo";
 
 const title = "Terms of Use — PageTurn";
 const description =
@@ -8,15 +9,7 @@ const description =
 
 export const Route = createFileRoute("/terms")({
   head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://pageturn.cloud/terms" },
-    ],
-    links: [{ rel: "canonical", href: "https://pageturn.cloud/terms" }],
+    ...seo({ title, description, path: "/terms" }),
   }),
   component: TermsPage,
 });

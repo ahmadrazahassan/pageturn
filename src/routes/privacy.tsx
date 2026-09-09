@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { seo } from "@/lib/seo";
 
 const title = "Privacy Policy — PageTurn";
 const description =
@@ -8,15 +9,7 @@ const description =
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://pageturn.cloud/privacy" },
-    ],
-    links: [{ rel: "canonical", href: "https://pageturn.cloud/privacy" }],
+    ...seo({ title, description, path: "/privacy" }),
   }),
   component: PrivacyPage,
 });
@@ -56,8 +49,8 @@ function PrivacyPage() {
           <h2 className="font-display font-bold text-2xl text-ink pt-4">Affiliate links</h2>
           <p>
             When you follow an affiliate link, the destination retailer may set its own cookie to
-            attribute the visit. That happens on their site under their privacy policy, not ours. Our
-            practice on labelling those links is described in our{" "}
+            attribute the visit. That happens on their site under their privacy policy, not ours.
+            Our practice on labelling those links is described in our{" "}
             <Link to="/disclosure" className="font-bold text-coral underline">
               affiliate disclosure
             </Link>

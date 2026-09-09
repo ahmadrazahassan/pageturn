@@ -11,12 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as CompareRouteImport } from './routes/compare'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DisclosureRouteImport } from './routes/disclosure'
-import { Route as GuidesRouteImport } from './routes/guides'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as BestIndexRouteImport } from './routes/best.index'
+import { Route as BestSlugRouteImport } from './routes/best.$slug'
+import { Route as CompareIndexRouteImport } from './routes/compare.index'
+import { Route as CompareSlugRouteImport } from './routes/compare.$slug'
+import { Route as GuidesIndexRouteImport } from './routes/guides.index'
+import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as ReviewsIndexRouteImport } from './routes/reviews.index'
 import { Route as ReviewsSlugRouteImport } from './routes/reviews.$slug'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
@@ -32,11 +36,6 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CompareRoute = CompareRouteImport.update({
-  id: '/compare',
-  path: '/compare',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -47,11 +46,6 @@ const DisclosureRoute = DisclosureRouteImport.update({
   path: '/disclosure',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GuidesRoute = GuidesRouteImport.update({
-  id: '/guides',
-  path: '/guides',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -60,6 +54,36 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BestIndexRoute = BestIndexRouteImport.update({
+  id: '/best/',
+  path: '/best/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BestSlugRoute = BestSlugRouteImport.update({
+  id: '/best/$slug',
+  path: '/best/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareIndexRoute = CompareIndexRouteImport.update({
+  id: '/compare/',
+  path: '/compare/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareSlugRoute = CompareSlugRouteImport.update({
+  id: '/compare/$slug',
+  path: '/compare/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesIndexRoute = GuidesIndexRouteImport.update({
+  id: '/guides/',
+  path: '/guides/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesSlugRoute = GuidesSlugRouteImport.update({
+  id: '/guides/$slug',
+  path: '/guides/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReviewsIndexRoute = ReviewsIndexRouteImport.update({
@@ -86,28 +110,36 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/disclosure': typeof DisclosureRoute
-  '/guides': typeof GuidesRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/best/$slug': typeof BestSlugRoute
+  '/compare/$slug': typeof CompareSlugRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/reviews/$slug': typeof ReviewsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/best/': typeof BestIndexRoute
+  '/compare/': typeof CompareIndexRoute
+  '/guides/': typeof GuidesIndexRoute
   '/reviews/': typeof ReviewsIndexRoute
   '/services/': typeof ServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/disclosure': typeof DisclosureRoute
-  '/guides': typeof GuidesRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/best/$slug': typeof BestSlugRoute
+  '/compare/$slug': typeof CompareSlugRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/reviews/$slug': typeof ReviewsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/best': typeof BestIndexRoute
+  '/compare': typeof CompareIndexRoute
+  '/guides': typeof GuidesIndexRoute
   '/reviews': typeof ReviewsIndexRoute
   '/services': typeof ServicesIndexRoute
 }
@@ -115,14 +147,18 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/disclosure': typeof DisclosureRoute
-  '/guides': typeof GuidesRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/best/$slug': typeof BestSlugRoute
+  '/compare/$slug': typeof CompareSlugRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/reviews/$slug': typeof ReviewsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/best/': typeof BestIndexRoute
+  '/compare/': typeof CompareIndexRoute
+  '/guides/': typeof GuidesIndexRoute
   '/reviews/': typeof ReviewsIndexRoute
   '/services/': typeof ServicesIndexRoute
 }
@@ -131,42 +167,54 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/compare'
     | '/contact'
     | '/disclosure'
-    | '/guides'
     | '/privacy'
     | '/terms'
+    | '/best/$slug'
+    | '/compare/$slug'
+    | '/guides/$slug'
     | '/reviews/$slug'
     | '/services/$slug'
+    | '/best/'
+    | '/compare/'
+    | '/guides/'
     | '/reviews/'
     | '/services/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/compare'
     | '/contact'
     | '/disclosure'
-    | '/guides'
     | '/privacy'
     | '/terms'
+    | '/best/$slug'
+    | '/compare/$slug'
+    | '/guides/$slug'
     | '/reviews/$slug'
     | '/services/$slug'
+    | '/best'
+    | '/compare'
+    | '/guides'
     | '/reviews'
     | '/services'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/compare'
     | '/contact'
     | '/disclosure'
-    | '/guides'
     | '/privacy'
     | '/terms'
+    | '/best/$slug'
+    | '/compare/$slug'
+    | '/guides/$slug'
     | '/reviews/$slug'
     | '/services/$slug'
+    | '/best/'
+    | '/compare/'
+    | '/guides/'
     | '/reviews/'
     | '/services/'
   fileRoutesById: FileRoutesById
@@ -174,14 +222,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  CompareRoute: typeof CompareRoute
   ContactRoute: typeof ContactRoute
   DisclosureRoute: typeof DisclosureRoute
-  GuidesRoute: typeof GuidesRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
+  BestSlugRoute: typeof BestSlugRoute
+  CompareSlugRoute: typeof CompareSlugRoute
+  GuidesSlugRoute: typeof GuidesSlugRoute
   ReviewsSlugRoute: typeof ReviewsSlugRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
+  BestIndexRoute: typeof BestIndexRoute
+  CompareIndexRoute: typeof CompareIndexRoute
+  GuidesIndexRoute: typeof GuidesIndexRoute
   ReviewsIndexRoute: typeof ReviewsIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
 }
@@ -202,13 +254,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/compare': {
-      id: '/compare'
-      path: '/compare'
-      fullPath: '/compare'
-      preLoaderRoute: typeof CompareRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -223,13 +268,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DisclosureRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/guides': {
-      id: '/guides'
-      path: '/guides'
-      fullPath: '/guides'
-      preLoaderRoute: typeof GuidesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -242,6 +280,48 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/best/': {
+      id: '/best/'
+      path: '/best'
+      fullPath: '/best/'
+      preLoaderRoute: typeof BestIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/best/$slug': {
+      id: '/best/$slug'
+      path: '/best/$slug'
+      fullPath: '/best/$slug'
+      preLoaderRoute: typeof BestSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare/': {
+      id: '/compare/'
+      path: '/compare'
+      fullPath: '/compare/'
+      preLoaderRoute: typeof CompareIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare/$slug': {
+      id: '/compare/$slug'
+      path: '/compare/$slug'
+      fullPath: '/compare/$slug'
+      preLoaderRoute: typeof CompareSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/': {
+      id: '/guides/'
+      path: '/guides'
+      fullPath: '/guides/'
+      preLoaderRoute: typeof GuidesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/$slug': {
+      id: '/guides/$slug'
+      path: '/guides/$slug'
+      fullPath: '/guides/$slug'
+      preLoaderRoute: typeof GuidesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reviews/': {
@@ -278,14 +358,18 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  CompareRoute: CompareRoute,
   ContactRoute: ContactRoute,
   DisclosureRoute: DisclosureRoute,
-  GuidesRoute: GuidesRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
+  BestSlugRoute: BestSlugRoute,
+  CompareSlugRoute: CompareSlugRoute,
+  GuidesSlugRoute: GuidesSlugRoute,
   ReviewsSlugRoute: ReviewsSlugRoute,
   ServicesSlugRoute: ServicesSlugRoute,
+  BestIndexRoute: BestIndexRoute,
+  CompareIndexRoute: CompareIndexRoute,
+  GuidesIndexRoute: GuidesIndexRoute,
   ReviewsIndexRoute: ReviewsIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
 }

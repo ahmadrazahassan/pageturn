@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { seo } from "@/lib/seo";
 import { supabase } from "@/integrations/supabase/client";
 
 const title = "Contact PageTurn — Review Requests & Corrections";
@@ -11,15 +12,7 @@ const description =
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://pageturn.cloud/contact" },
-    ],
-    links: [{ rel: "canonical", href: "https://pageturn.cloud/contact" }],
+    ...seo({ title, description, path: "/contact" }),
   }),
   component: ContactPage,
 });

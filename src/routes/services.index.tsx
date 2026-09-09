@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { Newsletter } from "@/components/newsletter";
 import { ServiceCard } from "@/components/service-card";
 import { services, comparisonGroups, getService } from "@/lib/services";
+import { seo, jsonLd, itemListSchema, breadcrumbSchema } from "@/lib/seo";
 
 const title = "Audiobook Services Reviewed & Compared — PageTurn";
 const description =
@@ -11,30 +12,21 @@ const description =
 
 export const Route = createFileRoute("/services/")({
   head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://pageturn.cloud/services" },
-    ],
-    links: [{ rel: "canonical", href: "https://pageturn.cloud/services" }],
+    ...seo({ title, description, path: "/services" }),
     scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          name: "Audiobook services reviewed by PageTurn",
-          itemListElement: services.map((s, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            name: s.name,
-            url: `/services/${s.slug}`,
-          })),
-        }),
-      },
+      jsonLd([
+        // itemListSchema resolves each url to an absolute one — the previous
+        // inline version emitted relative "/services/..." paths, which Google
+        // treats as invalid.
+        itemListSchema(
+          "Audiobook services reviewed by PageTurn",
+          services.map((s) => ({ name: s.name, path: `/services/${s.slug}` })),
+        ),
+        breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Services", path: "/services" },
+        ]),
+      ]),
     ],
   }),
   component: ServicesIndex,

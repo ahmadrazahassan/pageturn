@@ -7,6 +7,21 @@ import { getLongform, longformWordCount } from "@/lib/longform";
 import { PricingHighlight } from "@/components/pricing-highlight";
 import { getService } from "@/lib/services";
 import { AffiliateBanner } from "@/components/affiliate-banner";
+import { RelatedLinks, type RelatedLink } from "@/components/related-links";
+import { roundupsForReview } from "@/lib/roundups";
+import { seo, jsonLd, breadcrumbSchema, absoluteUrl, PUBLISHER } from "@/lib/seo";
+
+/**
+ * "16h 10m" -> "PT16H10M" for schema.org `duration`, which requires ISO 8601.
+ * Returns undefined rather than a malformed value if the shape is unexpected.
+ */
+function isoDuration(length: string): string | undefined {
+  const match = length.match(/(?:(\d+)h)?\s*(?:(\d+)m)?/);
+  if (!match) return undefined;
+  const [, hours, minutes] = match;
+  if (!hours && !minutes) return undefined;
+  return `PT${hours ? `${hours}H` : ""}${minutes ? `${minutes}M` : ""}`;
+}
 
 export const Route = createFileRoute("/reviews/$slug")({
   loader: ({ params }) => {
@@ -21,28 +36,31 @@ export const Route = createFileRoute("/reviews/$slug")({
       };
     }
     const r = loaderData.review;
+    const path = `/reviews/${params.slug}`;
     const title = `${r.title} by ${r.author} — Audiobook Review | PageTurn`;
     const description = `${r.excerpt} Narrated by ${r.narrator}. ${r.length}, rated ${r.score}.`;
     return {
-      meta: [
-        { title },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:type", content: "article" },
-        { property: "og:url", content: `https://pageturn.cloud/reviews/${params.slug}` },
-      ],
-      links: [{ rel: "canonical", href: `https://pageturn.cloud/reviews/${params.slug}` }],
+      ...seo({
+        title,
+        description,
+        path,
+        type: "article",
+        // The cover is a far better share card than the generic site image.
+        image: r.cover,
+        publishedTime: r.dateISO,
+        modifiedTime: r.dateISO,
+      }),
       scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
+        jsonLd([
+          {
             "@context": "https://schema.org",
             "@type": "Review",
             headline: r.title,
             datePublished: r.dateISO,
+            dateModified: r.dateISO,
+            mainEntityOfPage: absoluteUrl(path),
             author: { "@type": "Person", name: r.reviewer },
-            publisher: { "@type": "Organization", name: "PageTurn Media" },
+            publisher: { "@type": "Organization", name: PUBLISHER },
             reviewRating: {
               "@type": "Rating",
               ratingValue: r.rating,
@@ -52,11 +70,20 @@ export const Route = createFileRoute("/reviews/$slug")({
             itemReviewed: {
               "@type": "Audiobook",
               name: r.title,
+              image: r.cover,
+              isbn: r.isbn,
+              bookFormat: "https://schema.org/AudiobookFormat",
+              duration: isoDuration(r.length),
               author: { "@type": "Person", name: r.author },
               readBy: { "@type": "Person", name: r.narrator },
             },
-          }),
-        },
+          },
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Reviews", path: "/reviews" },
+            { name: r.title, path },
+          ]),
+        ]),
       ],
     };
   },
@@ -102,6 +129,14 @@ function Stars({ rating }: { rating: number }) {
 function ReviewDetail() {
   const { review } = Route.useLoaderData();
   const more = reviews.filter((r) => r.slug !== review.slug).slice(0, 3);
+
+  // Reviews are the leaves of the site graph; without these links they would
+  // have nothing pointing back up at the roundups that rank them.
+  const listedIn: RelatedLink[] = roundupsForReview(review.slug).map((r) => ({
+    to: `/best/${r.slug}`,
+    label: r.h1,
+    blurb: r.description,
+  }));
   const deep = getLongform(review.slug);
   const partner = getService("audiobooks-com");
   const words = (deep ? longformWordCount(deep) : 0) + review.body.join(" ").split(/\s+/).length;
@@ -119,7 +154,6 @@ function ReviewDetail() {
             width={400}
             height={600}
             className="w-full aspect-[2/3] object-contain bg-soft rounded-[2rem]"
-
           />
           <div className="mt-6 bg-card border border-border rounded-[2rem] p-6">
             <dl className="space-y-3 text-sm">
@@ -186,7 +220,10 @@ function ReviewDetail() {
           </div>
 
           {deep && (
-            <nav aria-label="In this review" className="mt-8 bg-white/70 rounded-[2rem] p-6 shadow-pastel">
+            <nav
+              aria-label="In this review"
+              className="mt-8 bg-white/70 rounded-[2rem] p-6 shadow-pastel"
+            >
               <p className="text-xs font-bold uppercase tracking-widest text-ink/45">
                 In this review · {words.toLocaleString()} words · about {minutes} min read
               </p>
@@ -248,7 +285,10 @@ function ReviewDetail() {
               ))}
 
               <section className="mt-12">
-                <h2 id="rating-breakdown" className="font-display font-bold text-2xl sm:text-3xl scroll-mt-28">
+                <h2
+                  id="rating-breakdown"
+                  className="font-display font-bold text-2xl sm:text-3xl scroll-mt-28"
+                >
                   How we scored it
                 </h2>
                 <div className="mt-4 overflow-hidden rounded-[2rem] border border-border bg-white/70">
@@ -272,7 +312,9 @@ function ReviewDetail() {
                           <th scope="row" className="px-5 py-4 font-bold whitespace-nowrap">
                             {line.label}
                           </th>
-                          <td className="px-5 py-4 font-bold text-coral whitespace-nowrap">{line.score}</td>
+                          <td className="px-5 py-4 font-bold text-coral whitespace-nowrap">
+                            {line.score}
+                          </td>
                           <td className="px-5 py-4 text-ink/75 leading-relaxed">{line.note}</td>
                         </tr>
                       ))}
@@ -329,6 +371,8 @@ function ReviewDetail() {
           ))}
         </div>
       </section>
+
+      <RelatedLinks links={listedIn} heading={`Lists featuring ${review.title}`} />
 
       <SiteFooter />
     </div>

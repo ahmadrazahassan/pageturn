@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { seo } from "@/lib/seo";
 
 const title = "About PageTurn & How We Rate Audiobooks";
 const description =
@@ -8,15 +9,7 @@ const description =
 
 export const Route = createFileRoute("/about")({
   head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://pageturn.cloud/about" },
-    ],
-    links: [{ rel: "canonical", href: "https://pageturn.cloud/about" }],
+    ...seo({ title, description, path: "/about" }),
   }),
   component: AboutPage,
 });
@@ -113,7 +106,8 @@ function AboutPage() {
               not usually read the genre.
             </li>
             <li>
-              <strong>4.0 – 4.4</strong> — Strongly recommended, with a caveat we name in the review.
+              <strong>4.0 – 4.4</strong> — Strongly recommended, with a caveat we name in the
+              review.
             </li>
             <li>
               <strong>3.5 – 3.9</strong> — Worth your time if the subject appeals to you.

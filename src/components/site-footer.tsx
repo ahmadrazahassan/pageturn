@@ -5,7 +5,7 @@ import { AffiliateBanner } from "@/components/affiliate-banner";
 export function SiteFooter() {
   return (
     <footer className="border-t border-border">
-      <div className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-8">
+      <div className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-3 lg:grid-cols-5 gap-8">
         <div className="md:col-span-1">
           <div className="flex items-center gap-3">
             <WaveMark size="sm" />
@@ -24,8 +24,13 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link to="/best" className="hover:text-ink transition-colors">
+                Best-of lists
+              </Link>
+            </li>
+            <li>
               <Link to="/guides" className="hover:text-ink transition-colors">
-                Genre guides
+                Listening guides
               </Link>
             </li>
             <li>
@@ -38,9 +43,57 @@ export function SiteFooter() {
                 Compare services
               </Link>
             </li>
+          </ul>
+        </div>
+        {/* Sitewide links to the pages that convert. Every page on the site
+            therefore points at them, which is the cheapest internal linking
+            available. */}
+        <div>
+          <h4 className="font-bold mb-3">Popular</h4>
+          <ul className="space-y-2 text-sm text-ink/60">
             <li>
-              <Link to="/about" className="hover:text-ink transition-colors">
-                How we rate
+              <Link
+                to="/compare/$slug"
+                params={{ slug: "audiobooks-com-vs-audible" }}
+                className="hover:text-ink transition-colors"
+              >
+                Audiobooks.com vs Audible
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/best/$slug"
+                params={{ slug: "best-audible-alternatives" }}
+                className="hover:text-ink transition-colors"
+              >
+                Best Audible alternatives
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/best/$slug"
+                params={{ slug: "best-audiobook-apps" }}
+                className="hover:text-ink transition-colors"
+              >
+                Best audiobook apps
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/best/$slug"
+                params={{ slug: "cheapest-audiobook-services" }}
+                className="hover:text-ink transition-colors"
+              >
+                Cheapest ways to listen
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/best/$slug"
+                params={{ slug: "best-audiobooks-for-beginners" }}
+                className="hover:text-ink transition-colors"
+              >
+                Best for beginners
               </Link>
             </li>
           </ul>

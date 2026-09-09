@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { seo } from "@/lib/seo";
 
 const title = "Affiliate Disclosure — PageTurn";
 const description =
@@ -8,15 +9,7 @@ const description =
 
 export const Route = createFileRoute("/disclosure")({
   head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://pageturn.cloud/disclosure" },
-    ],
-    links: [{ rel: "canonical", href: "https://pageturn.cloud/disclosure" }],
+    ...seo({ title, description, path: "/disclosure" }),
   }),
   component: DisclosurePage,
 });
@@ -37,12 +30,14 @@ function DisclosurePage() {
         <div className="mt-8 space-y-6 text-[17px] leading-[1.8] text-ink/80">
           <p>
             PageTurn is free to read. We fund the site through clearly labelled partner placements
-            and affiliate links: when you follow a link from a review, guide, or banner to a listening
-            platform and start a membership or buy a title, we may receive a small commission. You
-            pay the same price either way.
+            and affiliate links: when you follow a link from a review, guide, or banner to a
+            listening platform and start a membership or buy a title, we may receive a small
+            commission. You pay the same price either way.
           </p>
 
-          <h2 className="font-display font-bold text-2xl text-ink pt-4">Programmes we take part in</h2>
+          <h2 className="font-display font-bold text-2xl text-ink pt-4">
+            Programmes we take part in
+          </h2>
           <p>
             We are a participant in the Audiobooks.com affiliate programme, and we may join similar
             programmes run by other audiobook retailers and subscription services. Any link that can
@@ -55,9 +50,9 @@ function DisclosurePage() {
           </h2>
           <p>
             No advertiser, retailer or publisher sees a review before publication, and none can
-            request changes to a score. Commission rates play no part in which titles we cover or how
-            we rank them. We regularly publish scores below 3.5 for books that are available through
-            the programmes we take part in.
+            request changes to a score. Commission rates play no part in which titles we cover or
+            how we rank them. We regularly publish scores below 3.5 for books that are available
+            through the programmes we take part in.
           </p>
           <p>
             Where a publisher provides a review copy, we say so inside that review. We never accept

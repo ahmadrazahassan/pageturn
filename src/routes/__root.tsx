@@ -10,6 +10,14 @@ import {
 import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import {
+  DEFAULT_OG_IMAGE,
+  PUBLISHER,
+  SITE_NAME,
+  jsonLd,
+  organizationSchema,
+  websiteSchema,
+} from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -78,10 +86,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Reader-run audiobook reviews with narrator notes, ratings and listening times, updated weekly.",
       },
-      { name: "author", content: "PageTurn Media" },
-      { property: "og:site_name", content: "PageTurn" },
+      { name: "author", content: PUBLISHER },
+      { property: "og:site_name", content: SITE_NAME },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "en_US" },
+      // Fallback card image. Individual routes override this via `buildMeta`,
+      // but without it any page that forgets would share with no image at all.
+      { property: "og:image", content: DEFAULT_OG_IMAGE },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: DEFAULT_OG_IMAGE },
+      { name: "theme-color", content: "#FDF8F0" },
+    ],
+    scripts: [
+      // Sitewide entity graph. Emitted once at the root so every page inherits
+      // it and route-level schema can reference the same @id.
+      jsonLd([organizationSchema, websiteSchema]),
     ],
     links: [
       {

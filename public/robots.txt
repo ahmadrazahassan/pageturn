@@ -10,6 +10,21 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+# Answer engines. These drive a growing share of "best audiobook app" style
+# queries, and they are the traffic our comparison and roundup pages are written
+# for, so they are explicitly welcome.
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 User-agent: *
 Allow: /
 
