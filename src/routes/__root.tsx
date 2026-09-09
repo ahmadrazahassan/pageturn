@@ -87,6 +87,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Reader-run audiobook reviews with narrator notes, ratings and listening times, updated weekly.",
       },
       { name: "author", content: PUBLISHER },
+      // Google Search Console ownership. Belt and braces alongside
+      // public/google54c24ccf1be24226.html — Google warns that removing either
+      // one can un-verify the property, so leave both in place.
+      {
+        name: "google-site-verification",
+        content: "LwNFkaloMF-yaM1pMT1fAf3U8S8axCYCLV-kOi1lmcU",
+      },
       { property: "og:site_name", content: SITE_NAME },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "en_US" },
