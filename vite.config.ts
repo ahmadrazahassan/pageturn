@@ -11,16 +11,10 @@ export default defineConfig({
       server: { entry: "server" },
     }),
     nitro({
-      preset: "cloudflare-module",
-      output: {
-        dir: "dist",
-        publicDir: "dist/client",
-        serverDir: "dist/server",
-      },
-      cloudflare: {
-        nodeCompat: true,
-        deployConfig: true,
-      },
+      // The production site is hosted on Vercel. Using the matching Nitro
+      // preset emits the Vercel Build Output API structure instead of a
+      // Cloudflare worker bundle that Vercel cannot route.
+      preset: "vercel",
     }),
     react(),
   ],
