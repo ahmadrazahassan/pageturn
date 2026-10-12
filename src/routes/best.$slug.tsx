@@ -1,3 +1,4 @@
+import { AudibleCta } from "@/components/audible-cta";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
@@ -357,6 +358,7 @@ function RoundupPage() {
       <RelatedLinks links={related} heading="Where to go next" />
 
       <Newsletter />
+      <AudibleCta />
       <SiteFooter />
     </div>
   );

@@ -1,3 +1,4 @@
+import { AudibleCta } from "@/components/audible-cta";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -374,6 +375,7 @@ function ReviewDetail() {
 
       <RelatedLinks links={listedIn} heading={`Lists featuring ${review.title}`} />
 
+      <AudibleCta />
       <SiteFooter />
     </div>
   );

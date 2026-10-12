@@ -10,7 +10,7 @@ import logoApple from "@/assets/logos/apple-com.png";
 import logoAudiobookStore from "@/assets/logos/audiobookstore-com.png";
 import logoDownpour from "@/assets/logos/downpour-com.png";
 import logoLibby from "@/assets/logos/libbyapp-com.png";
-import { AUDIOBOOKS_AFFILIATE_URL } from "@/lib/affiliate";
+import { AUDIOBOOKS_AFFILIATE_URL, AUDIBLE_AFFILIATE_URL } from "@/lib/affiliate";
 
 export type Service = {
   slug: string;
@@ -43,7 +43,7 @@ export type Service = {
   verdict: string;
 };
 
-/** Audiobooks.com is the one partner we apply affiliate links to. */
+/** Audiobooks.com and Audible partner links are managed in affiliate.ts. */
 export const AFFILIATE_URL = AUDIOBOOKS_AFFILIATE_URL;
 
 export const services: Service[] = [
@@ -101,10 +101,10 @@ export const services: Service[] = [
     slug: "audible",
     name: "Audible",
     company: "Amazon",
-    url: "https://www.audible.com/",
+    url: AUDIBLE_AFFILIATE_URL,
     domain: "audible.com",
     logo: logoAudible,
-    affiliate: false,
+    affiliate: true,
     tagline: "The biggest catalogue and the deepest bench of exclusive originals.",
     model: "Subscription — 1 credit/month + Plus Catalog",
     price: "$14.95 / month (Premium Plus, US)",
@@ -127,8 +127,16 @@ export const services: Service[] = [
       "The Plus Catalog has grown into a real perk rather than a bargain bin, and Alexa and Kindle integration is smoother than anything a competitor can offer. Whispersync between ebook and audiobook still feels like the single best feature in the category.",
       "The catch is lock-in. Your purchases are readable only in Amazon's apps, so leaving means leaving your library behind. We also find title-level pricing outside credits to be the least attractive of the major stores.",
     ],
-    pros: ["Biggest catalogue anywhere", "Best-in-class exclusives and originals", "Whispersync with Kindle editions"],
-    cons: ["Heavy platform lock-in", "Expensive à la carte pricing", "No support for independent bookshops"],
+    pros: [
+      "Biggest catalogue anywhere",
+      "Best-in-class exclusives and originals",
+      "Whispersync with Kindle editions",
+    ],
+    cons: [
+      "Heavy platform lock-in",
+      "Expensive à la carte pricing",
+      "No support for independent bookshops",
+    ],
     bestFor: ["Heavy listeners", "Series and narrator completists", "Kindle and Alexa households"],
     verdict:
       "The safest choice for catalogue depth, and the one we would think hardest about before committing a large library to.",
@@ -163,8 +171,16 @@ export const services: Service[] = [
       "DRM-free downloads are the practical advantage. You can archive an MP3 copy, play it in any app, and keep it whatever happens to your account — which is not true of Audible or Audiobooks.com.",
       "The apps are competent rather than luxurious, and there are no exclusives to speak of. Availability outside North America is also patchier than the global players.",
     ],
-    pros: ["DRM-free files you truly own", "Supports independent bookshops", "Frequent à la carte sales"],
-    cons: ["No exclusive originals", "Apps feel plainer than rivals", "Limited outside North America"],
+    pros: [
+      "DRM-free files you truly own",
+      "Supports independent bookshops",
+      "Frequent à la carte sales",
+    ],
+    cons: [
+      "No exclusive originals",
+      "Apps feel plainer than rivals",
+      "Limited outside North America",
+    ],
     bestFor: ["Listeners who want to own files", "Indie bookshop supporters", "Archivists"],
     verdict: "The service we recommend to anyone who resents renting their library.",
   },
@@ -197,8 +213,16 @@ export const services: Service[] = [
       "The complication is throttling. Heavy listeners eventually see popular titles hidden until the next cycle, which the service does not explain clearly enough. Treat availability as a moving target, not a catalogue.",
       "Nothing is kept. Cancel and the shelf empties, which makes it a poor fit for anyone building a permanent library.",
     ],
-    pros: ["Audiobooks plus ebooks and magazines in one fee", "Cheapest entry price of the big subscriptions", "Excellent for wide, casual reading"],
-    cons: ["Availability throttling for heavy users", "Nothing is kept after cancelling", "Newest releases often missing"],
+    pros: [
+      "Audiobooks plus ebooks and magazines in one fee",
+      "Cheapest entry price of the big subscriptions",
+      "Excellent for wide, casual reading",
+    ],
+    cons: [
+      "Availability throttling for heavy users",
+      "Nothing is kept after cancelling",
+      "Newest releases often missing",
+    ],
     bestFor: ["Mixed readers", "Value hunters", "Non-fiction browsers"],
     verdict: "Great value while you subscribe, with no library to show for it afterwards.",
   },
@@ -231,7 +255,11 @@ export const services: Service[] = [
       "The daily email is the product. Deals rotate, so your reading order is dictated by what happens to be cheap, which suits browsers and frustrates anyone with a fixed list.",
       "Playback lives in Chirp's own app, which is basic but stable.",
     ],
-    pros: ["No subscription required", "Genuinely low prices on backlist", "Purchases are permanent"],
+    pros: [
+      "No subscription required",
+      "Genuinely low prices on backlist",
+      "Purchases are permanent",
+    ],
     cons: ["You read what is on sale", "Basic app", "Few new releases"],
     bestFor: ["Bargain hunters", "Backlist readers", "People who hate subscriptions"],
     verdict: "A perfect companion to a subscription rather than a replacement for one.",
@@ -265,7 +293,11 @@ export const services: Service[] = [
       "Credit pricing is slightly cheaper than Audible and Audiobooks.com, but the audio catalogue is thinner in places and the app is the weakest part of the experience.",
       "There are no originals, and discovery inside the store is poor compared with the editorial curation elsewhere.",
     ],
-    pros: ["Cheaper monthly credit", "Great international availability", "One account for ebooks and audio"],
+    pros: [
+      "Cheaper monthly credit",
+      "Great international availability",
+      "One account for ebooks and audio",
+    ],
     cons: ["App is clunky", "Thinner audio catalogue", "Weak discovery"],
     bestFor: ["Kobo device owners", "Listeners outside the US", "Amazon avoiders"],
     verdict: "A sensible non-Amazon default, especially outside North America.",
@@ -293,13 +325,18 @@ export const services: Service[] = [
     reviewedOn: "12 August 2026",
     reviewedOnISO: "2026-08-12",
     reviewer: "Mara Chen",
-    summary: "Effectively free if you already subscribe, and frustrating if audiobooks become your main habit.",
+    summary:
+      "Effectively free if you already subscribe, and frustrating if audiobooks become your main habit.",
     body: [
       "Fifteen hours covers roughly one and a half average audiobooks a month. For occasional listeners that is plenty and costs nothing extra.",
       "The listening experience is the weak point. Spotify's player was built for music, and chapter navigation, bookmarks and speed controls are all a step behind dedicated apps.",
       "The hour cap arrives without ceremony, and top-ups are poor value. Anyone finishing three books a month should subscribe elsewhere.",
     ],
-    pros: ["No extra cost for Premium subscribers", "Large included catalogue", "Works on every device you already use"],
+    pros: [
+      "No extra cost for Premium subscribers",
+      "Large included catalogue",
+      "Works on every device you already use",
+    ],
     cons: ["15-hour monthly cap", "Player is weak for long-form audio", "Nothing kept"],
     bestFor: ["Occasional listeners", "Existing Premium subscribers", "Trying audiobooks for free"],
     verdict: "A fine way to start, and the first thing you will outgrow.",
@@ -327,15 +364,28 @@ export const services: Service[] = [
     reviewedOn: "8 August 2026",
     reviewedOnISO: "2026-08-08",
     reviewer: "Jonah Reyes",
-    summary: "If you listen in Swedish, Arabic, Hindi, Dutch or Turkish, this is usually the best option available.",
+    summary:
+      "If you listen in Swedish, Arabic, Hindi, Dutch or Turkish, this is usually the best option available.",
     body: [
       "Storytel's unlimited tiers are excellent value and its non-English catalogues are the deepest we have tested, including strong local originals.",
       "Some markets throttle heavy listeners on the cheapest tier, so read the plan detail before assuming unlimited means unlimited.",
       "It is not sold in the US, which is the single biggest reason English-language readers overlook it.",
     ],
-    pros: ["True unlimited listening on most tiers", "Outstanding non-English catalogue", "Strong local originals"],
-    cons: ["Not available in the US", "Some tiers throttle heavy use", "Nothing kept after cancelling"],
-    bestFor: ["Non-English listeners", "Heavy listeners in Europe and Asia", "Family plan households"],
+    pros: [
+      "True unlimited listening on most tiers",
+      "Outstanding non-English catalogue",
+      "Strong local originals",
+    ],
+    cons: [
+      "Not available in the US",
+      "Some tiers throttle heavy use",
+      "Nothing kept after cancelling",
+    ],
+    bestFor: [
+      "Non-English listeners",
+      "Heavy listeners in Europe and Asia",
+      "Family plan households",
+    ],
     verdict: "The clear pick in the markets where it operates.",
   },
   {
@@ -367,7 +417,11 @@ export const services: Service[] = [
       "You pay for it. Without credits or subscription discounts, full-price titles cost noticeably more than the same book bought with a credit elsewhere.",
       "Nothing you buy leaves the Apple ecosystem, and the AI-narrated titles are variable in quality.",
     ],
-    pros: ["Effortless on Apple devices", "No subscription commitment", "Excellent CarPlay and Watch handoff"],
+    pros: [
+      "Effortless on Apple devices",
+      "No subscription commitment",
+      "Excellent CarPlay and Watch handoff",
+    ],
     cons: ["Most expensive per book", "Apple devices only", "Uneven AI narration"],
     bestFor: ["Apple-only households", "Occasional buyers", "Gift purchases"],
     verdict: "Convenient and costly — fine for a few books a year, poor value beyond that.",
@@ -484,7 +538,15 @@ export const comparisonGroups: { title: string; blurb: string; slugs: string[] }
   {
     title: "Subscription services",
     blurb: "Monthly fee, credits or unlimited listening, nothing kept unless the plan says so.",
-    slugs: ["audiobooks-com", "audible", "libro-fm", "everand", "kobo-audiobooks", "storytel", "spotify-audiobooks"],
+    slugs: [
+      "audiobooks-com",
+      "audible",
+      "libro-fm",
+      "everand",
+      "kobo-audiobooks",
+      "storytel",
+      "spotify-audiobooks",
+    ],
   },
   {
     title: "Buy per book",

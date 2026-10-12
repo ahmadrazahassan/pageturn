@@ -39,8 +39,8 @@ function DisclosurePage() {
             Programmes we take part in
           </h2>
           <p>
-            We are a participant in the Audiobooks.com affiliate programme, and we may join similar
-            programmes run by other audiobook retailers and subscription services. Any link that can
+            We participate in the Audiobooks.com affiliate programme and use Amazon affiliate links
+            for Audible. As an Amazon Associate I earn from qualifying purchases. Any link that can
             earn us a commission is marked as sponsored in the page code and labelled in plain
             English next to the button.
           </p>

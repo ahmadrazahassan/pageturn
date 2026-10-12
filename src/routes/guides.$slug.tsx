@@ -1,3 +1,4 @@
+import { AudibleCta } from "@/components/audible-cta";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -190,6 +191,7 @@ function GuideDetail() {
       <RelatedLinks links={related} heading="More listening guides" />
 
       <Newsletter />
+      <AudibleCta />
       <SiteFooter />
     </div>
   );

@@ -147,10 +147,11 @@ export function SiteFooter() {
       <div className="max-w-6xl mx-auto px-6 pb-8 text-xs text-ink/40">
         <AffiliateBanner id="mobile" className="mb-8 mx-auto max-w-[320px]" />
         <p>
-          PageTurn participates in affiliate programs, including Audiobooks.com. As an independent
-          reviewer, we may earn a commission on qualifying purchases at no extra cost to you. All
-          opinions are our own.
+          PageTurn participates in affiliate programs, including Audiobooks.com and Audible. As an
+          independent reviewer, we may earn a commission on qualifying purchases at no extra cost to
+          you. All opinions are our own.
         </p>
+        <p className="mt-3">As an Amazon Associate I earn from qualifying purchases.</p>
         <p className="mt-3">© 2026 PageTurn Media. All rights reserved.</p>
       </div>
     </footer>

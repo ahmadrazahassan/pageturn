@@ -2,6 +2,7 @@ const TRACKING_HOST = "https://audiobookscom.postaffiliatepro.com";
 const AFFILIATE_ID = "0r1zy6ucuydc9";
 
 export const AUDIOBOOKS_AFFILIATE_URL = `${TRACKING_HOST}/scripts/kcd5fq4o7?a_aid=${AFFILIATE_ID}&a_bid=6de39593`;
+export const AUDIBLE_AFFILIATE_URL = "https://amzn.to/47f7Kq4";
 
 export type AffiliateBannerId = "leaderboard" | "wide" | "landscape" | "portrait" | "mobile";
 

@@ -128,7 +128,10 @@ function ServiceCta({ service }: { service: Service }) {
 function VersusPage() {
   const { versus, a, b } = Route.useLoaderData();
   const pair = [a, b];
-  const affiliatePartner = pair.find((s) => s.affiliate);
+  const affiliatePartner = pair
+    .filter((s) => s.affiliate)
+    .map((s) => s.name)
+    .join(" and ");
 
   const crumbs: Crumb[] = [
     { name: "Home", path: "/" },
@@ -204,8 +207,8 @@ function VersusPage() {
             </div>
             {affiliatePartner && (
               <p className="mt-4 font-body text-sm text-ink/55">
-                The {affiliatePartner.name} link is an affiliate link — we may earn a commission at
-                no extra cost to you, and it never changes a score or a placement.{" "}
+                {affiliatePartner} links are affiliate links — we may earn a commission at no extra
+                cost to you, and it never changes a score or a placement.{" "}
                 <Link to="/disclosure" className="underline underline-offset-2">
                   How we make money
                 </Link>

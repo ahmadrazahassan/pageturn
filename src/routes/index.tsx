@@ -1,3 +1,4 @@
+import { AudibleCta } from "@/components/audible-cta";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import heroShelf from "@/assets/hero-shelf.jpg";
 import { SiteHeader } from "@/components/site-header";
@@ -255,6 +256,7 @@ function Index() {
       </section>
 
       <Newsletter />
+      <AudibleCta />
       <SiteFooter />
     </div>
   );

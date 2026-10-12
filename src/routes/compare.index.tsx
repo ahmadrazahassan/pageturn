@@ -54,8 +54,8 @@ function Compare() {
           Audiobook services compared, without the sales pitch.
         </h1>
         <p className="mt-4 text-lg text-ink/70 max-w-2xl leading-relaxed font-body">
-          Every figure below comes from an account we paid for. One entry — Audiobooks.com — is an
-          affiliate partner, and it is labelled everywhere it appears.{" "}
+          Every figure below comes from an account we paid for. Audiobooks.com and Audible are
+          affiliate partners, and their links are labelled wherever they appear.{" "}
           <Link to="/disclosure" className="underline underline-offset-2">
             Here is exactly how that works.
           </Link>
